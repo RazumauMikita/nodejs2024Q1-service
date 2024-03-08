@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserStorage } from './interfaces/user-storage.interface';
+import { InMemoryUsersStorage } from './store/users.storage';
 
 @Injectable()
 export class UsersService {
-  constructor(private storage: UserStorage) {}
+  constructor(@Inject('UserStore') private storage: UserStorage) {}
   create(createUserDto: CreateUserDto) {
     return this.storage.createUser(createUserDto);
   }

@@ -11,16 +11,16 @@ import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class InMemoryUsersStorage implements UserStorage {
-  private users: UserEntity[];
-  constructor(users: UserEntity[]) {
-    this.users = users;
-  }
+  private users: UserEntity[] = [];
+  constructor() {}
 
   deleteUser(id: string): boolean {
-    const userIndex = this.users.findIndex((elem) => elem.id === id);
-    if (!userIndex) return false;
-    delete this.users[userIndex];
-    return true;
+    const user = this.users.find((elem) => elem.id === id);
+    const isUserExist = user ? true : false;
+    if (isUserExist) {
+      this.users = this.users.filter((elem) => elem.id !== id);
+    }
+    return isUserExist;
   }
 
   getUserById(id: string): UserEntity {
@@ -31,7 +31,7 @@ export class InMemoryUsersStorage implements UserStorage {
     return this.users;
   }
   createUser(params: CreateUserDto): UserEntity {
-    const currentTime = new Date().getMilliseconds();
+    const currentTime = Date.now();
     const newUser: UserEntity = {
       ...params,
       id: uuid(),
@@ -51,7 +51,7 @@ export class InMemoryUsersStorage implements UserStorage {
     if (!user) return undefined;
     const doesPasswordMAtch = user.password === params.oldPassword;
     if (doesPasswordMAtch) {
-      const currentTime = new Date().getMilliseconds();
+      const currentTime = Date.now();
       user.password = params.newPassword;
       user.version += 1;
       user.updatedAt = currentTime;
