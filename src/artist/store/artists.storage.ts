@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
+
 import { UpdateArtistDto } from '../dto/update-artist.dto';
 import { ArtistEntity } from '../entities/artist.entity';
 import { ArtistStorage } from '../interfaces/artist-storage.interface';
 import { CreateArtistDto } from '../dto/create-artist.dto';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class InMemoryArtistsStorage implements ArtistStorage {

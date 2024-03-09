@@ -1,1 +1,12 @@
-export class CreateTrackDto {}
+import { IsNotEmpty, IsUUID } from 'class-validator';
+
+export class CreateTrackDto {
+  @IsNotEmpty()
+  name: string;
+
+  artistId: string | null;
+
+  albumId: string | null;
+  @IsNotEmpty()
+  duration: number;
+}
