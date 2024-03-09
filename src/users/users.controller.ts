@@ -45,7 +45,9 @@ export class UsersController {
   @HttpCode(201)
   @Header('Content-Type', 'application/json')
   create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    const response = Object.assign({}, this.usersService.create(createUserDto));
+    delete response.password;
+    return response;
   }
 
   @Put(':id')
@@ -53,15 +55,16 @@ export class UsersController {
     if (!validate(id)) {
       throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.usersService.update(id, updateUserDto);
-    if (response === 'Old password is wrong.') {
-      throw new HttpException(response, HttpStatus.FORBIDDEN);
+    const updatedUser = this.usersService.update(id, updateUserDto);
+    if (updatedUser === 'Old password is wrong.') {
+      throw new HttpException('Old password is wrong.', HttpStatus.FORBIDDEN);
     }
 
-    if (response === "User doesn't exist") {
-      throw new HttpException(response, HttpStatus.NOT_FOUND);
+    if (updatedUser === "User doesn't exist") {
+      throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
     }
-
+    const response = Object.assign({}, updatedUser);
+    delete response.password;
     return response;
   }
 
