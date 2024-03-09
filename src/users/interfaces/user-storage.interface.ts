@@ -1,6 +1,7 @@
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
+import { UpdatePasswordError } from '../store/users.storage';
 import { UserParams } from './user-params.interface';
 import { User } from './user.interface';
 
@@ -11,6 +12,6 @@ export interface UserStorage {
   updateUserPassword: (
     id: string,
     params: UpdateUserDto,
-  ) => UserEntity | undefined;
+  ) => UserEntity | UpdatePasswordError;
   deleteUser: (id: string) => boolean;
 }

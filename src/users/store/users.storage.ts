@@ -9,6 +9,10 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 
+export type UpdatePasswordError =
+  | 'Old password is wrong.'
+  | "User doesn't exist";
+
 @Injectable()
 export class InMemoryUsersStorage implements UserStorage {
   private users: UserEntity[] = [];
@@ -46,9 +50,9 @@ export class InMemoryUsersStorage implements UserStorage {
   updateUserPassword(
     id: string,
     params: UpdateUserDto,
-  ): UserEntity | undefined {
+  ): UserEntity | UpdatePasswordError {
     const user = this.getUserById(id);
-    if (!user) return undefined;
+    if (!user) return "User doesn't exist";
     const doesPasswordMAtch = user.password === params.oldPassword;
     if (doesPasswordMAtch) {
       const currentTime = Date.now();
@@ -56,8 +60,8 @@ export class InMemoryUsersStorage implements UserStorage {
       user.version += 1;
       user.updatedAt = currentTime;
       return user;
+    } else {
+      return 'Old password is wrong.';
     }
-
-    return undefined;
   }
 }

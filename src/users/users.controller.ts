@@ -10,6 +10,7 @@ import {
   Header,
   HttpException,
   HttpStatus,
+  Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -47,13 +48,32 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+    if (!validate(id)) {
+      throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
+    }
+    const response = this.usersService.update(id, updateUserDto);
+    if (response === 'Old password is wrong.') {
+      throw new HttpException(response, HttpStatus.FORBIDDEN);
+    }
+
+    if (response === "User doesn't exist") {
+      throw new HttpException(response, HttpStatus.NOT_FOUND);
+    }
+
+    return response;
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+    if (!validate(id)) {
+      throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
+    }
+    const response = this.usersService.remove(id);
+    if (!response) {
+      throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
+    }
   }
 }
