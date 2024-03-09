@@ -1,10 +1,10 @@
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { UpdatePasswordError } from '../store/users.storage';
-import { UserParams } from './user-params.interface';
-import { User } from './user.interface';
 
+export type UpdatePasswordError =
+  | 'Old password is wrong.'
+  | "User doesn't exist";
 export interface UserStorage {
   getUsers: () => UserEntity[];
   getUserById: (id: string) => UserEntity | undefined;

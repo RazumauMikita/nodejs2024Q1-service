@@ -1,17 +1,15 @@
 import { v4 as uuid } from 'uuid';
+import { Injectable } from '@nestjs/common';
 
-import { UserParams } from '../interfaces/user-params.interface';
-import { UserStorage } from '../interfaces/user-storage.interface';
-import { User } from '../interfaces/user.interface';
-import { version } from 'os';
+import {
+  UpdatePasswordError,
+  UserStorage,
+} from '../interfaces/user-storage.interface';
+
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { Injectable } from '@nestjs/common';
-import { UserEntity } from '../entities/user.entity';
 
-export type UpdatePasswordError =
-  | 'Old password is wrong.'
-  | "User doesn't exist";
+import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class InMemoryUsersStorage implements UserStorage {
