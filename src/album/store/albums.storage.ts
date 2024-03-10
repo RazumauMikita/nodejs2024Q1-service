@@ -9,7 +9,7 @@ import { UpdateAlbumDto } from '../dto/update-album.dto';
 @Injectable()
 export class InMemoryAlbumStorage implements AlbumStorage {
   private albums: AlbumEntity[] = [];
-  constructor() {}
+
   getAlbums(): AlbumEntity[] {
     return this.albums;
   }

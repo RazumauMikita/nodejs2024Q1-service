@@ -14,7 +14,6 @@ import { UserEntity } from '../entities/user.entity';
 @Injectable()
 export class InMemoryUsersStorage implements UserStorage {
   private users: UserEntity[] = [];
-  constructor() {}
 
   deleteUser(id: string): boolean {
     const user = this.users.find((elem) => elem.id === id);

@@ -7,7 +7,7 @@ import { UpdateTrackDto } from '../dto/update-track.dto';
 
 export class InMemoryTracksStorage implements TrackStorage {
   private tracks: TrackEntity[] = [];
-  constructor() {}
+
   getTracks(): TrackEntity[] {
     return this.tracks;
   }

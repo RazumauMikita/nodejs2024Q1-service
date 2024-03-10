@@ -12,5 +12,6 @@ import { InMemoryArtistsStorage } from './store/artists.storage';
       useClass: InMemoryArtistsStorage,
     },
   ],
+  exports: [ArtistService, 'ArtistStore'],
 })
 export class ArtistModule {}

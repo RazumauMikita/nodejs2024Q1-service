@@ -9,7 +9,7 @@ import { CreateArtistDto } from '../dto/create-artist.dto';
 @Injectable()
 export class InMemoryArtistsStorage implements ArtistStorage {
   private artists: ArtistEntity[] = [];
-  constructor() {}
+
   getArtists(): ArtistEntity[] {
     return this.artists;
   }
