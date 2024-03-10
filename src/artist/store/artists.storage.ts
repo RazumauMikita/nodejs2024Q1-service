@@ -13,7 +13,7 @@ export class InMemoryArtistsStorage implements ArtistStorage {
   getArtists(): ArtistEntity[] {
     return this.artists;
   }
-  getArtistById(id: string): ArtistEntity {
+  getArtistById(id: string): ArtistEntity | undefined {
     return this.artists.find((elem) => elem.id === id);
   }
 

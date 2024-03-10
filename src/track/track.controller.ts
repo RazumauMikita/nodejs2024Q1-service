@@ -60,7 +60,7 @@ export class TrackController {
   }
 
   @Put(':id')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Header('Content-Type', 'application/json')
   update(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
     if (!validate(id)) {
