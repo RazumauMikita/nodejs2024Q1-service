@@ -10,7 +10,7 @@ import { AlbumModule } from 'src/album/album.module';
 @Module({
   imports: [
     forwardRef(() => ArtistModule),
-    TrackModule,
+    forwardRef(() => TrackModule),
     forwardRef(() => AlbumModule),
   ],
   controllers: [FavoritesController],
