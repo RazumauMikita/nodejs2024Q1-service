@@ -14,10 +14,17 @@ export class InMemoryFavoritesStorage implements FavoriteStorage {
     this.favorites.albums.push(id);
   }
   deleteAlbum(id: string): boolean {
-    if (this.favorites.albums.find((elem) => elem === id)) {
-      this.favorites.albums = this.favorites.tracks.filter(
-        (elem) => elem === id,
-      );
+    const isEntityFavorite = this.favorites.albums.includes(id);
+
+    if (isEntityFavorite) {
+      const newAlbums = [];
+      this.favorites.albums.forEach((elem) => {
+        if (elem !== id) {
+          newAlbums.push(elem);
+        }
+      });
+      this.favorites.albums = newAlbums;
+
       return true;
     }
     return false;
@@ -26,10 +33,17 @@ export class InMemoryFavoritesStorage implements FavoriteStorage {
     this.favorites.tracks.push(id);
   }
   deleteTrack(id: string): boolean {
-    if (this.favorites.tracks.find((elem) => elem === id)) {
-      this.favorites.tracks = this.favorites.albums.filter(
-        (elem) => elem === id,
-      );
+    const isEntityFavorite = this.favorites.tracks.includes(id);
+
+    if (isEntityFavorite) {
+      const newTracks = [];
+      this.favorites.tracks.forEach((elem) => {
+        if (elem !== id) {
+          newTracks.push(elem);
+        }
+      });
+      this.favorites.tracks = newTracks;
+
       return true;
     }
     return false;
@@ -38,10 +52,17 @@ export class InMemoryFavoritesStorage implements FavoriteStorage {
     this.favorites.artists.push(id);
   }
   deleteArtist(id: string): boolean {
-    if (this.favorites.artists.find((elem) => elem === id)) {
-      this.favorites.artists = this.favorites.tracks.filter(
-        (elem) => elem === id,
-      );
+    const isEntityFavorite = this.favorites.artists.includes(id);
+
+    if (isEntityFavorite) {
+      const newArtists = [];
+      this.favorites.artists.forEach((elem) => {
+        if (elem !== id) {
+          newArtists.push(elem);
+        }
+      });
+      this.favorites.artists = newArtists;
+
       return true;
     }
     return false;
