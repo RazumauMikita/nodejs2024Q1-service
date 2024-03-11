@@ -11,10 +11,16 @@
 git clone https://github.com/RazumauMikita/nodejs2024Q1-service
 ```
 
+## Change directory
+
+```
+cd nodejs2024Q1-service
+```
+
 ## Installing NPM modules
 
 ```
-npm install
+npm install --legacy-peer-deps
 ```
 
 ## Create env file
@@ -30,27 +36,6 @@ npm start
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/docs/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
-
-## Use endpoints
-
-http://localhost:4000/
-
-http://localhost:4000/user
-http://localhost:4000/user/${:id}
-
-http://localhost:4000/track
-http://localhost:4000/track/${:id}
-
-http://localhost:4000/artist
-http://localhost:4000/artist/${:id}
-
-http://localhost:4000/album
-http://localhost:4000/album/${:id}
-
-http://localhost:4000/favs
-http://localhost:4000/favs/track/${:id}
-http://localhost:4000/favs/artist/${:id}
-http://localhost:4000/favs/album/${:id}
 
 ## Testing
 
