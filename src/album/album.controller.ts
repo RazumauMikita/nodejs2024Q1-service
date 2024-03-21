@@ -41,11 +41,7 @@ export class AlbumController {
     if (!validate(id)) {
       throw new HttpException('albumId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const album = this.albumService.findOne(id);
-    if (!album) {
-      throw new HttpException("Album doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return album;
+    return this.albumService.findOne(id);
   }
 
   @Put(':id')
@@ -55,23 +51,15 @@ export class AlbumController {
     if (!validate(id)) {
       throw new HttpException('albumId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.albumService.update(id, updateAlbumDto);
-    if (!response) {
-      throw new HttpException("Album doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return response;
+    return this.albumService.update(id, updateAlbumDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if (!validate(id)) {
       throw new HttpException('albumId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.albumService.remove(id);
-    if (!response) {
-      throw new HttpException("Album doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return response;
+    await this.albumService.remove(id);
   }
 }
