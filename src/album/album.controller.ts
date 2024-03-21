@@ -11,10 +11,11 @@ import {
   HttpException,
   Put,
 } from '@nestjs/common';
+import { validate } from 'uuid';
+
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { validate } from 'uuid';
 
 @Controller('album')
 export class AlbumController {

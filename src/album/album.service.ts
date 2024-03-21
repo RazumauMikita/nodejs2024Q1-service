@@ -12,9 +12,6 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AlbumService {
   constructor(
-    @Inject('AlbumStore') private storage: AlbumStorage,
-    @Inject('TrackStore') private trackStorage: TrackStorage,
-    @Inject('FavoriteStore') private favoriteStorage: FavoriteStorage,
     @InjectRepository(AlbumEntity)
     private albumRepository: Repository<AlbumEntity>,
   ) {}

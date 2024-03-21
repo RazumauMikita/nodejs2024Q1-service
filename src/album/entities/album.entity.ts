@@ -5,10 +5,10 @@ export class AlbumEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('text')
   name: string;
 
-  @Column()
+  @Column('integer')
   year: number;
 
   @Column({

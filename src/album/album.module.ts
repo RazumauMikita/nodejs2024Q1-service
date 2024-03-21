@@ -7,7 +7,6 @@ import { InMemoryAlbumStorage } from './store/albums.storage';
 import { ArtistModule } from 'src/artist/artist.module';
 import { TrackModule } from 'src/track/track.module';
 import { FavoritesModule } from 'src/favorites/favorites.module';
-import { ArtistEntity } from 'src/artist/entities/artist.entity';
 import { AlbumEntity } from './entities/album.entity';
 
 @Module({
