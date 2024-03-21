@@ -1,10 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { ArtistStorage } from './interfaces/artist-storage.interface';
 import { TrackStorage } from 'src/track/interfaces/track-storage.interface';
 import { AlbumStorage } from 'src/album/interfaces/album-storage.interface';
 import { FavoriteStorage } from 'src/favorites/interfaces/favorites-storage';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { ArtistEntity } from './entities/artist.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ArtistService {
@@ -13,26 +17,53 @@ export class ArtistService {
     @Inject('TrackStore') private trackStorage: TrackStorage,
     @Inject('AlbumStore') private albumStorage: AlbumStorage,
     @Inject('FavoriteStore') private favoriteStorage: FavoriteStorage,
+    @InjectRepository(ArtistEntity)
+    private artistRepository: Repository<ArtistEntity>,
   ) {}
 
-  create(createArtistDto: CreateArtistDto) {
-    return this.storage.createArtist(createArtistDto);
+  async create(createArtistDto: CreateArtistDto) {
+    return await this.artistRepository.save({
+      name: createArtistDto.name,
+      grammy: createArtistDto.grammy,
+    });
   }
 
-  findAll() {
-    return this.storage.getArtists();
+  async findAll() {
+    return await this.artistRepository.find();
   }
 
-  findOne(id: string) {
-    return this.storage.getArtistById(id);
+  async findOne(id: string) {
+    const existArtist = await this.artistRepository.findOne({
+      where: { id },
+    });
+
+    if (!existArtist)
+      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
+
+    return existArtist;
   }
 
-  update(id: string, updateArtistDto: UpdateArtistDto) {
-    return this.storage.updateArtistInfo(id, updateArtistDto);
+  async update(id: string, updateArtistDto: UpdateArtistDto) {
+    const existArtist = await this.artistRepository.findOne({
+      where: { id },
+    });
+    if (!existArtist)
+      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
+
+    await this.artistRepository.update(id, updateArtistDto);
+    return this.findOne(id);
+    //return this.storage.updateArtistInfo(id, updateArtistDto);
   }
 
-  remove(id: string) {
-    this.favoriteStorage.deleteArtist(id);
+  async remove(id: string) {
+    const existArtist = await this.artistRepository.findOne({
+      where: { id },
+    });
+    if (!existArtist)
+      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
+    await this.artistRepository.delete(id);
+
+    /* this.favoriteStorage.deleteArtist(id);
     const tracks = this.trackStorage.getTracks();
     const albums = this.albumStorage.getAlbums();
     tracks.forEach((track) => {
@@ -45,6 +76,6 @@ export class ArtistService {
         album.artistId = null;
       }
     });
-    return this.storage.deleteArtist(id);
+    return this.storage.deleteArtist(id);*/
   }
 }

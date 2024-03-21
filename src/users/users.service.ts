@@ -4,13 +4,11 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserStorage } from './interfaces/user-storage.interface';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('UserStore') private storage: UserStorage,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
@@ -40,18 +38,14 @@ export class UsersService {
 
   async findOne(id: string) {
     const existUser = await this.userRepository.findOne({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     if (!existUser)
       throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
 
     return await this.userRepository.findOne({
-      where: {
-        id: id,
-      },
+      where: { id },
       select: {
         login: true,
         id: true,
@@ -64,9 +58,7 @@ export class UsersService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const existUser = await this.userRepository.findOne({
-      where: {
-        id,
-      },
+      where: { id },
     });
     if (!existUser)
       throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
@@ -82,9 +74,7 @@ export class UsersService {
 
   async remove(id: string) {
     const existUser = await this.userRepository.findOne({
-      where: {
-        id: id,
-      },
+      where: { id },
     });
     if (!existUser)
       throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
