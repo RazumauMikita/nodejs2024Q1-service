@@ -1,3 +1,4 @@
+import { ColumnNumericTransformer } from 'src/transformer/transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -10,8 +11,12 @@ export class UserEntity {
   password: string;
   @Column()
   version: number;
-  @Column()
+  @Column('bigint', {
+    transformer: new ColumnNumericTransformer(),
+  })
   createdAt: number;
-  @Column()
+  @Column('bigint', {
+    transformer: new ColumnNumericTransformer(),
+  })
   updatedAt: number;
 }

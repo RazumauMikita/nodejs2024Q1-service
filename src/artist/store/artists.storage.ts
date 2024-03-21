@@ -20,6 +20,7 @@ export class InMemoryArtistsStorage implements ArtistStorage {
   createArtist(params: CreateArtistDto): ArtistEntity {
     const newArtist: ArtistEntity = {
       id: uuid(),
+      albums: [],
       ...params,
     };
     this.artists.push(newArtist);

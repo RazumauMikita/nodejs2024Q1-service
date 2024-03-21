@@ -50,10 +50,10 @@ export class InMemoryUsersStorage implements UserStorage {
   ): UserEntity | UpdatePasswordError {
     const user = this.getUserById(id);
     if (!user) return "User doesn't exist";
-    const doesPasswordMAtch = user.password === params.oldPassword;
+    const doesPasswordMAtch = user.password === params.password;
     if (doesPasswordMAtch) {
       const currentTime = Date.now();
-      user.password = params.newPassword;
+      user.password = params.password;
       user.version += 1;
       user.updatedAt = currentTime;
       return user;
