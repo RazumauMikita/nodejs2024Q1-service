@@ -16,6 +16,9 @@ export class TrackService {
     return await this.trackRepository.save({
       name: createTrackDto.name,
       duration: createTrackDto.duration,
+      isFavorite: false,
+      albumId: createTrackDto.albumId,
+      artistId: createTrackDto.artistId,
     });
   }
 

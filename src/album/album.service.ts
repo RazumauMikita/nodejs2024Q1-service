@@ -19,6 +19,8 @@ export class AlbumService {
     return await this.albumRepository.save({
       name: createAlbumDto.name,
       year: createAlbumDto.year,
+      isFavorite: false,
+      artistId: createAlbumDto.artistId,
     });
   }
 

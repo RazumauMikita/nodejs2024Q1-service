@@ -1,5 +1,13 @@
 import { AlbumEntity } from 'src/album/entities/album.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { FavoriteEntity } from 'src/favorites/entities/favorite.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class ArtistEntity {
@@ -16,4 +24,7 @@ export class ArtistEntity {
     onDelete: 'SET NULL',
   })
   albums: AlbumEntity[];
+
+  @Column({ default: false })
+  isFavorite: boolean;
 }

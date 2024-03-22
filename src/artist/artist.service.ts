@@ -17,6 +17,7 @@ export class ArtistService {
     return await this.artistRepository.save({
       name: createArtistDto.name,
       grammy: createArtistDto.grammy,
+      isFavorite: false,
     });
   }
 

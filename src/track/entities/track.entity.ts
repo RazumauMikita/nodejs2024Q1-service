@@ -19,4 +19,7 @@ export class TrackEntity {
 
   @Column('integer')
   duration: number;
+
+  @Column({ default: false })
+  isFavorite: boolean;
 }

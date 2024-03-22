@@ -28,8 +28,8 @@ export class FavoritesController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @Header('Content-Type', 'application/json')
-  getFavorites() {
-    return this.favoritesService.findAll();
+  async getFavorites() {
+    return await this.favoritesService.findAll();
   }
 
   @Post('album/:id')
@@ -39,12 +39,7 @@ export class FavoritesController {
     if (!validate(id)) {
       throw new HttpException('albumId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.addAlbum(id);
-    if (!result) {
-      throw new HttpException("Album doesn't exist", 422);
-    } else {
-      return this.favoritesService.findAll();
-    }
+    return this.favoritesService.addAlbum(id);
   }
 
   @Delete('album/:id')
@@ -54,12 +49,7 @@ export class FavoritesController {
     if (!validate(id)) {
       throw new HttpException('albumId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.removeAlbum(id);
-    if (!result) {
-      throw new HttpException('Album is not favorite', 422);
-    } else {
-      return ResponseMessage.ALBUM_WAS_ADDED;
-    }
+    this.favoritesService.removeAlbum(id);
   }
 
   @Post('artist/:id')
@@ -69,12 +59,7 @@ export class FavoritesController {
     if (!validate(id)) {
       throw new HttpException('artistId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.addArtist(id);
-    if (!result) {
-      throw new HttpException("Artist doesn't exist", 422);
-    } else {
-      return this.favoritesService.findAll();
-    }
+    return this.favoritesService.addArtist(id);
   }
 
   @Delete('artist/:id')
@@ -84,12 +69,7 @@ export class FavoritesController {
     if (!validate(id)) {
       throw new HttpException('artistId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.removeArtist(id);
-    if (!result) {
-      throw new HttpException('Artist is not favorite', 422);
-    } else {
-      return ResponseMessage.ALBUM_WAS_ADDED;
-    }
+    this.favoritesService.removeArtist(id);
   }
 
   @Post('track/:id')
@@ -99,12 +79,7 @@ export class FavoritesController {
     if (!validate(id)) {
       throw new HttpException('trackId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.addTrack(id);
-    if (!result) {
-      throw new HttpException("Track doesn't exist", 422);
-    } else {
-      return this.favoritesService.findAll();
-    }
+    return this.favoritesService.addTrack(id);
   }
 
   @Delete('track/:id')
@@ -114,11 +89,6 @@ export class FavoritesController {
     if (!validate(id)) {
       throw new HttpException('artistId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.removeTrack(id);
-    if (!result) {
-      throw new HttpException('Track is not favorite', 422);
-    } else {
-      return ResponseMessage.TRACK_WAS_DELETED;
-    }
+    this.favoritesService.removeTrack(id);
   }
 }

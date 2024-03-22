@@ -18,6 +18,7 @@ export class InMemoryTracksStorage implements TrackStorage {
     const newTrack: TrackEntity = {
       id: uuid(),
       ...params,
+      isFavorite: false,
     };
 
     this.tracks.push(newTrack);
