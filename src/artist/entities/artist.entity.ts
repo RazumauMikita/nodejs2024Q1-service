@@ -1,5 +1,6 @@
 import { AlbumEntity } from 'src/album/entities/album.entity';
 import { FavoriteEntity } from 'src/favorites/entities/favorite.entity';
+import { TrackEntity } from 'src/track/entities/track.entity';
 import {
   Column,
   Entity,
@@ -24,6 +25,11 @@ export class ArtistEntity {
     onDelete: 'SET NULL',
   })
   albums: AlbumEntity[];
+
+  @OneToMany(() => TrackEntity, (track) => track.artistId, {
+    onDelete: 'SET NULL',
+  })
+  tracks: AlbumEntity[];
 
   @Column({ default: false })
   isFavorite: boolean;

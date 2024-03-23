@@ -19,6 +19,8 @@ export class InMemoryTracksStorage implements TrackStorage {
       id: uuid(),
       ...params,
       isFavorite: false,
+      artist: null,
+      album: null,
     };
 
     this.tracks.push(newTrack);
