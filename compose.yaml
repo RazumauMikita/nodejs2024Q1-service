@@ -11,9 +11,31 @@ version: '3'
 name: my_service
 services:
   server:
+    container_name: my_server
     build: .
+    depends_on:
+      - my_db
+    environment:
+      - POSTGRES_HOST=my_db
     ports:
       - ${PORT}:${PORT}
+
+  db:
+    container_name: my_db
+    image: postgres:15.2
+    restart: always
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USERNAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+volumes:
+  db-data:
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the
