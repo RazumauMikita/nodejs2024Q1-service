@@ -10,7 +10,8 @@ import { ArtistModule } from './artist/artist.module';
 import { AlbumModule } from './album/album.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { DataSource } from 'typeorm';
-
+import { config } from 'dotenv';
+config();
 @Module({
   imports: [
     UsersModule,
@@ -32,7 +33,7 @@ import { DataSource } from 'typeorm';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.js, .ts}'],
-        synchronize: false,
+        synchronize: true,
       }),
       inject: [ConfigService],
       dataSourceFactory: async (options) => {

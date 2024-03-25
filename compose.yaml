@@ -11,26 +11,31 @@ version: '3'
 name: my_service
 services:
   server:
-    container_name: my_server
     build: .
     depends_on:
-      - my_db
+      - postgres
     environment:
-      - POSTGRES_HOST=my_db
+      NODE_ENV: development
+      PORT: ${PORT}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PORT: ${DB_PORT}
+      POSTGRES_HOST: ${DB_HOST}
     ports:
       - ${PORT}:${PORT}
 
-  db:
-    container_name: my_db
+  postgres:
+    container_name: database
     image: postgres:15.2
     restart: always
     user: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_USER=${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - ${DB_PORT}:${DB_PORT}
 
