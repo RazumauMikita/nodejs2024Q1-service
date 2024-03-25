@@ -9,17 +9,9 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
-import { FavoritesService } from './favorites.service';
 import { validate } from 'uuid';
 
-enum ResponseMessage {
-  ARTIST_WAS_ADDED = 'Artist was added to favorites',
-  ALBUM_WAS_ADDED = 'Album was added to favorites',
-  TRACK_WAS_ADDED = 'Track was added to favorites',
-  ARTIST_WAS_DELETED = 'Artist was deleted from favorites',
-  ALBUM_WAS_DELETED = 'Album was deleted from favorites',
-  TRACK_WAS_DELETED = 'Track was deleted from favorites',
-}
+import { FavoritesService } from './favorites.service';
 
 @Controller('favs')
 export class FavoritesController {

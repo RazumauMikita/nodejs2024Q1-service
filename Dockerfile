@@ -10,7 +10,6 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-# RUN npm run build && npm run migration:run
-
+# ENTRYPOINT [ "npm run build && npm run migration:run" ] 
 
 CMD npm run start

@@ -1,13 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { AlbumStorage } from './interfaces/album-storage.interface';
-import { TrackStorage } from 'src/track/interfaces/track-storage.interface';
-import { FavoriteStorage } from 'src/favorites/interfaces/favorites-storage';
 import { AlbumEntity } from './entities/album.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumService {
