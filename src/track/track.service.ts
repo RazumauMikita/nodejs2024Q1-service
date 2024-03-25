@@ -1,34 +1,57 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackStorage } from './interfaces/track-storage.interface';
-import { FavoriteStorage } from 'src/favorites/interfaces/favorites-storage';
+import { TrackEntity } from './entities/track.entity';
 
 @Injectable()
 export class TrackService {
   constructor(
-    @Inject('TrackStore') private storage: TrackStorage,
-    @Inject('FavoriteStore') private favoriteStorage: FavoriteStorage,
+    @InjectRepository(TrackEntity)
+    private trackRepository: Repository<TrackEntity>,
   ) {}
-  create(createTrackDto: CreateTrackDto) {
-    return this.storage.createTrack(createTrackDto);
+  async create(createTrackDto: CreateTrackDto) {
+    return await this.trackRepository.save({
+      name: createTrackDto.name,
+      duration: createTrackDto.duration,
+      isFavorite: false,
+      albumId: createTrackDto.albumId,
+      artistId: createTrackDto.artistId,
+    });
   }
 
-  findAll() {
-    return this.storage.getTracks();
+  async findAll() {
+    return await this.trackRepository.find();
   }
 
-  findOne(id: string) {
-    return this.storage.getTrackById(id);
+  async findOne(id: string) {
+    const existTrack = await this.trackRepository.findOne({
+      where: { id },
+    });
+    if (!existTrack)
+      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
+    return existTrack;
   }
 
-  update(id: string, updateTrackDto: UpdateTrackDto) {
-    return this.storage.updateTrackInfo(id, updateTrackDto);
+  async update(id: string, updateTrackDto: UpdateTrackDto) {
+    const existTrack = await this.trackRepository.findOne({
+      where: { id },
+    });
+    if (!existTrack)
+      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
+
+    await this.trackRepository.update(id, updateTrackDto);
+    return this.findOne(id);
   }
 
-  remove(id: string) {
-    this.favoriteStorage.deleteTrack(id);
-    return this.storage.deleteTrack(id);
+  async remove(id: string) {
+    const existTrack = await this.trackRepository.findOne({
+      where: { id },
+    });
+    if (!existTrack)
+      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
+    await this.trackRepository.delete(id);
   }
 }

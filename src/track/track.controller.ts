@@ -11,10 +11,11 @@ import {
   Header,
   Put,
 } from '@nestjs/common';
+import { validate } from 'uuid';
+
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { validate } from 'uuid';
 
 @Controller('track')
 export class TrackController {
@@ -29,11 +30,7 @@ export class TrackController {
         throw new HttpException('albumId is invalid', HttpStatus.BAD_REQUEST);
       }
     }
-    if (createTrackDto.artistId) {
-      if (!validate(createTrackDto.artistId)) {
-        throw new HttpException('artistId is invalid', HttpStatus.BAD_REQUEST);
-      }
-    }
+
     return this.trackService.create(createTrackDto);
   }
 
@@ -51,11 +48,7 @@ export class TrackController {
     if (!validate(id)) {
       throw new HttpException('trackId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const track = this.trackService.findOne(id);
-    if (!track) {
-      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return track;
+    return this.trackService.findOne(id);
   }
 
   @Put(':id')
@@ -65,24 +58,16 @@ export class TrackController {
     if (!validate(id)) {
       throw new HttpException('trackId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.trackService.update(id, updateTrackDto);
-    if (!response) {
-      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return response;
+    return this.trackService.update(id, updateTrackDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if (!validate(id)) {
       throw new HttpException('trackId is invalid', HttpStatus.BAD_REQUEST);
     }
 
-    const response = this.trackService.remove(id);
-    if (!response) {
-      throw new HttpException("Track doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return response;
+    return await this.trackService.remove(id);
   }
 }

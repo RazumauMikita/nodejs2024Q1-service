@@ -11,10 +11,11 @@ import {
   Header,
   Put,
 } from '@nestjs/common';
+import { validate } from 'uuid';
+
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { validate } from 'uuid';
 
 @Controller('artist')
 export class ArtistController {
@@ -55,22 +56,15 @@ export class ArtistController {
     if (!validate(id)) {
       throw new HttpException('artistId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.artistService.update(id, updateArtistDto);
-    if (!response) {
-      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    return response;
+    return this.artistService.update(id, updateArtistDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if (!validate(id)) {
       throw new HttpException('artistId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.artistService.remove(id);
-    if (!response) {
-      throw new HttpException("Artist doesn't exist", HttpStatus.NOT_FOUND);
-    }
+    await this.artistService.remove(id);
   }
 }

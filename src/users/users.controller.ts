@@ -11,10 +11,11 @@ import {
   HttpStatus,
   Put,
 } from '@nestjs/common';
+import { validate } from 'uuid';
+
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { validate } from 'uuid';
 
 @Controller('user')
 export class UsersController {
@@ -44,9 +45,7 @@ export class UsersController {
   @HttpCode(201)
   @Header('Content-Type', 'application/json')
   create(@Body() createUserDto: CreateUserDto) {
-    const response = Object.assign({}, this.usersService.create(createUserDto));
-    delete response.password;
-    return response;
+    return this.usersService.create(createUserDto);
   }
 
   @Put(':id')
@@ -54,28 +53,15 @@ export class UsersController {
     if (!validate(id)) {
       throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const updatedUser = this.usersService.update(id, updateUserDto);
-    if (updatedUser === 'Old password is wrong.') {
-      throw new HttpException('Old password is wrong.', HttpStatus.FORBIDDEN);
-    }
-
-    if (updatedUser === "User doesn't exist") {
-      throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
-    }
-    const response = Object.assign({}, updatedUser);
-    delete response.password;
-    return response;
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     if (!validate(id)) {
       throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
     }
-    const response = this.usersService.remove(id);
-    if (!response) {
-      throw new HttpException("User doesn't exist", HttpStatus.NOT_FOUND);
-    }
+    await this.usersService.remove(id);
   }
 }

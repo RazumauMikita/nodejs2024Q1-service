@@ -1,8 +1,22 @@
+import { ColumnNumericTransformer } from 'src/transformer/transformer';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
 export class UserEntity {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+  @Column()
   login: string;
+  @Column()
   password: string;
+  @Column()
   version: number;
+  @Column('bigint', {
+    transformer: new ColumnNumericTransformer(),
+  })
   createdAt: number;
+  @Column('bigint', {
+    transformer: new ColumnNumericTransformer(),
+  })
   updatedAt: number;
 }
