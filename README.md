@@ -27,6 +27,25 @@ npm install --legacy-peer-deps
 
 Create .env file (based on .env.example): ./.env
 
+## Run Docker compose
+
+```
+docker compose up
+```
+
+## Check migration
+
+Migration into container doesn't work. You can start migrate locally.
+
+1. Set DB_HOST value in .env to "localhost".
+2. Start postgres database or container.
+3. disable synchronize in app.module
+
+```
+npm run build
+npm run migration:run
+```
+
 ## Running application
 
 ```
