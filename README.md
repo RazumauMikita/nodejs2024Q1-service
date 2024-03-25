@@ -11,6 +11,10 @@
 git clone https://github.com/RazumauMikita/nodejs2024Q1-service
 ```
 
+## Change branch
+
+Chose `docker` brunch
+
 ## Change directory
 
 ```
@@ -26,6 +30,7 @@ npm install --legacy-peer-deps
 ## Create env file
 
 Create .env file (based on .env.example): ./.env
+Set your password in .env DB_PASSWORD='your_pass'
 
 ## Run Docker compose
 
@@ -38,8 +43,9 @@ docker compose up
 Migration into container doesn't work. You can start migrate locally.
 
 1. Set DB_HOST value in .env to "localhost".
-2. Start postgres database or container.
+2. Start postgres database or new container.
 3. disable synchronize in app.module
+4. Drop tables in database if they exist.
 
 ```
 npm run build
